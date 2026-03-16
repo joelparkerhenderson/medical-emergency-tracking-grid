@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm build:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm add:*)",
+      "Bash(npx:*)",
+      "Bash(mkdir:*)",
+      "Bash(pnpm test:*)",
+      "Bash(tree:*)",
+      "mcp__svelte__svelte-autofixer",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(npm test:*)",
+      "Bash(which cargo:*)",
+      "Bash(loco:*)",
+      "Bash(cd:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(cargo test:*)",
+      "Bash(pg_isready 2>&1; psql -l 2>&1 | head -10)",
+      "Bash(brew services:*)",
+      "Read(//opt/homebrew/var/**)",
+      "Read(//usr/local/**)",
+      "Bash(sleep:*)",
+      "Bash(pg_isready -h localhost -p 5432 2>&1; pg_isready -h /tmp -p 5432 2>&1; ls /opt/homebrew/var/postgresql@17/postmaster.pid 2>&1; cat /opt/homebrew/var/log/postgresql@17.log 2>&1 | tail -20)",
+      "Bash(sudo chown:*)"
+    ]
+  }
+}

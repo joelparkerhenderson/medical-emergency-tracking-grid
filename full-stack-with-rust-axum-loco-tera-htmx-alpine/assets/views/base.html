@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Urgent Emergency Care{% endblock %}</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    <style>
+        :root {
+            --nhs-dark-blue: #003087;
+            --nhs-blue: #005eb8;
+            --nhs-danger: #d4351c;
+            --nhs-bg: #f0f4f5;
+            --nhs-border: #d8dde0;
+            --nhs-text: #212b32;
+            --nhs-label: #425563;
+            --nhs-focus: #ffeb3b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--nhs-text);
+            background: var(--nhs-bg);
+            display: grid;
+            grid-template-areas:
+                "header header header"
+                "left   main   right"
+                "footer footer footer";
+            grid-template-columns: auto 1fr auto;
+            grid-template-rows: auto 1fr auto;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .site-header {
+            grid-area: header;
+            background: var(--nhs-dark-blue);
+            border-bottom: 4px solid var(--nhs-blue);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .site-header h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .site-header .logo {
+            height: 2rem;
+        }
+
+        /* Sidebars */
+        .sidebar {
+            background: var(--nhs-dark-blue);
+            color: #fff;
+            width: 3rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow: hidden;
+            transition: width 0.2s ease;
+        }
+
+        .sidebar.expanded {
+            width: 12rem;
+        }
+
+        .sidebar-left { grid-area: left; }
+        .sidebar-right { grid-area: right; }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            padding: 0.25rem;
+        }
+
+        .sidebar a, .sidebar button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.6rem;
+            border: none;
+            border-radius: 4px;
+            background: none;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.15s;
+            width: 100%;
+            text-align: left;
+        }
+
+        .sidebar a:hover, .sidebar button:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar a:focus-visible, .sidebar button:focus-visible {
+            outline: 3px solid var(--nhs-focus);
+            outline-offset: -2px;
+        }
+
+        .sidebar .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        /* Main content */
+        .site-main {
+            grid-area: main;
+            padding: 1.25rem;
+            overflow-y: auto;
+        }
+
+        /* Footer */
+        .site-footer {
+            grid-area: footer;
+            background: var(--nhs-dark-blue);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.8rem;
+        }
+
+        .site-footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .site-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body hx-boost="true">
+
+    <header class="site-header">
+        <span class="logo">NHS</span>
+        <h1>Urgent Emergency Care: {% block page_title %}Dashboard{% endblock %}</h1>
+    </header>
+
+    <aside class="sidebar sidebar-left" x-data="{ expanded: false }" :class="{ expanded }">
+        <nav>
+            <button @click="expanded = !expanded">
+                <span class="icon" x-text="expanded ? '\u25C0' : '\u25B6'"></span>
+                <span x-show="expanded" x-text="expanded ? 'Collapse' : 'Expand'"></span>
+            </button>
+            <a href="/"><span class="icon">&#x1F3E0;</span><span x-show="expanded">Home</span></a>
+            <a href="/tracking-grid"><span class="icon">&#x1F4CB;</span><span x-show="expanded">Tracking Grid</span></a>
+            <a href="/patient-search"><span class="icon">&#x1F50D;</span><span x-show="expanded">Patient Search</span></a>
+            <a href="/staff-details"><span class="icon">&#x1F464;</span><span x-show="expanded">Staff Details</span></a>
+            <a href="/settings"><span class="icon">&#x2699;</span><span x-show="expanded">Settings</span></a>
+        </nav>
+    </aside>
+
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <aside class="sidebar sidebar-right" x-data="{ expanded: false }" :class="{ expanded }">
+        <nav>
+            <button @click="expanded = !expanded">
+                <span class="icon" x-text="expanded ? '\u25B6' : '\u25C0'"></span>
+                <span x-show="expanded" x-text="expanded ? 'Collapse' : 'Expand'"></span>
+            </button>
+            <a href="/help"><span class="icon">&#x2753;</span><span x-show="expanded">Help</span></a>
+            <a href="/email"><span class="icon">&#x2709;</span><span x-show="expanded">Email</span></a>
+            <a href="/phone"><span class="icon">&#x260E;</span><span x-show="expanded">Phone</span></a>
+        </nav>
+    </aside>
+
+    <footer class="site-footer">
+        <a href="/help">Help</a>
+        <span>Copyright</span>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/security">Security Policy</a>
+    </footer>
+
+</body>
+</html>
